@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	var cpu *cpu.CPU
+	var cpu cpu.CPU
 
 	cpu.Frequency = 1.66
 	//test mem

@@ -17,7 +17,10 @@ func (cpu *CPU) styAbs() int {
 }
 
 func (cpu *CPU) stAbs(r *register.Register) int {
-	r.Store([2]byte{cpu.memory.Read(cpu.pc.Read()), cpu.memory.Read(cpu.pc.Read())})
+	lb := cpu.memory.Read(cpu.pc.Read())
+	hb := cpu.memory.Read(cpu.pc.Read())
+
+	r.Store([2]byte{lb, hb})
 
 	return stAbsCost
 }

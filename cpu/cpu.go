@@ -21,8 +21,13 @@ type CPU struct {
 
 type instructionFunc func() int
 
-func (cpu CPU) Start() {
+func (cpu *CPU) Start() {
 	instructionTable := cpu.createInstuctionsTable()
+
+	// init registers
+	cpu.a = register.New(&cpu.memory)
+	cpu.x = register.New(&cpu.memory)
+	cpu.y = register.New(&cpu.memory)
 
 	cpu.pc.Reset()
 
@@ -47,7 +52,7 @@ func (cpu CPU) run(cycles int) {
 	time.Sleep(time.Duration(float32(cycles)*cpu.Frequency) * time.Microsecond)
 }
 
-func (cpu CPU) createInstuctionsTable() map[byte]instructionFunc {
+func (cpu *CPU) createInstuctionsTable() map[byte]instructionFunc {
 	instructionTable := make(map[byte]instructionFunc, 256)
 
 	instructionTable[0x4c] = cpu.jmpAbs

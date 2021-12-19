@@ -14,7 +14,7 @@ type CPU struct {
 	a         register.Register
 	x         register.Register
 	y         register.Register
-	sp        register.Register
+	sp        register.StrackPointer
 	pc        register.ProgramCounter
 	p         register.ProcessorStatus
 }
@@ -22,14 +22,9 @@ type CPU struct {
 type instructionFunc func() int
 
 func (cpu *CPU) Start() {
+	cpu.Reset()
+
 	instructionTable := cpu.createInstuctionsTable()
-
-	// init registers
-	cpu.a = register.New(&cpu.memory)
-	cpu.x = register.New(&cpu.memory)
-	cpu.y = register.New(&cpu.memory)
-
-	cpu.pc.Reset()
 
 	for {
 		pc := cpu.memory.Read(cpu.pc.Read())
@@ -41,7 +36,13 @@ func (cpu *CPU) Start() {
 }
 
 func (cpu *CPU) Reset() {
+	// init registers
+	cpu.a = register.New(&cpu.memory)
+	cpu.x = register.New(&cpu.memory)
+	cpu.y = register.New(&cpu.memory)
+
 	cpu.pc.Reset()
+	cpu.sp.Reset()
 }
 
 func (cpu *CPU) Load(mem [memory.Size]byte) {
@@ -54,6 +55,8 @@ func (cpu CPU) run(cycles int) {
 
 func (cpu *CPU) createInstuctionsTable() map[byte]instructionFunc {
 	instructionTable := make(map[byte]instructionFunc, 256)
+
+	instructionTable[0x00] = cpu.brk
 
 	instructionTable[0x4c] = cpu.jmpAbs
 

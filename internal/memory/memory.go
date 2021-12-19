@@ -23,7 +23,14 @@ func (m Memory) Read(address [2]byte) byte {
 	return m.memory[littleEndianAdress]
 }
 
-//TODO: remove this method after mapping the ROM
 func (m *Memory) Set(memory [Size]byte) {
 	m.memory = memory
+}
+
+func (m *Memory) StackPush(address byte, data byte) {
+	m.memory[uint16(address)+0x100] = data
+}
+
+func (m *Memory) StackPull(address byte) byte {
+	return m.memory[uint16(address)+0x100]
 }

@@ -38,3 +38,22 @@ func TestSet(t *testing.T) {
 	m.Set(ma)
 	assert.Equal(t, expected, m.memory)
 }
+
+func TestStackPush(t *testing.T) {
+	var m Memory
+
+	expected := byte(0x55)
+
+	m.StackPush(0x45, expected)
+	assert.Equal(t, expected, m.memory[0x145])
+}
+
+func TestStackPull(t *testing.T) {
+	var m Memory
+
+	expected := byte(0x55)
+	m.memory[0x145] = expected
+
+	actual := m.StackPull(0x45)
+	assert.Equal(t, expected, actual)
+}

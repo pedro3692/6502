@@ -19,6 +19,7 @@ func main() {
 	mem[0xFFFC] = 0x4c
 	mem[0xFFFD] = 0x00
 	mem[0xFFFE] = 0x00
+	mem[0xFFFF] = 0x00
 	cpu.Load(mem)
 
 	// var mem2 [memory.Size]byte

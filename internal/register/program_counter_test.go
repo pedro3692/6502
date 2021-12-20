@@ -35,6 +35,17 @@ func TestPCRead(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestPCCheck(t *testing.T) {
+	var pc ProgramCounter
+
+	expected := [2]byte{0xfc, 0xff}
+
+	pc.data = expected
+
+	actual := pc.Check()
+	assert.Equal(t, expected, actual)
+}
+
 func TestPCReset(t *testing.T) {
 	var pc ProgramCounter
 

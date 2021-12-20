@@ -8,32 +8,38 @@ import (
 )
 
 type CPU struct {
-	frequency float32 // in MHz
-	memory    memory.Memory
-	ir        register.Register
-	a         register.Register
-	x         register.Register
-	y         register.Register
-	sp        register.StrackPointer
-	pc        register.ProgramCounter
-	p         register.ProcessorStatus
+	frequency        float32 // in MHz
+	memory           memory.Memory
+	ir               register.Register
+	a                register.Register
+	x                register.Register
+	y                register.Register
+	sp               register.StrackPointer
+	pc               register.ProgramCounter
+	p                register.ProcessorStatus
+	instructionTable map[byte]instructionFunc
 }
 
 type instructionFunc func() int
 
 func (cpu *CPU) Start(frequency float32) {
+	cpu.instructionTable = cpu.createInstuctionsTable()
 	cpu.frequency = frequency
+
 	cpu.Reset()
 
-	instructionTable := cpu.createInstuctionsTable()
-
 	for {
-		pc := cpu.memory.Read(cpu.pc.Read())
-		cpu.ir.Load(pc)
-
-		cycles := instructionTable[cpu.ir.Read()]()
-		cpu.run(cycles)
+		cpu.Step()
+		cpu.dump(false)
 	}
+}
+
+func (cpu *CPU) Step() {
+	pc := cpu.memory.Read(cpu.pc.Read())
+	cpu.ir.Load(pc)
+
+	cycles := cpu.instructionTable[cpu.ir.Read()]()
+	cpu.run(cycles)
 }
 
 func (cpu *CPU) Reset() {

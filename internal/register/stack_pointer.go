@@ -31,3 +31,7 @@ func (sp *StrackPointer) Dec() byte {
 
 	return sp.data
 }
+
+func (r StrackPointer) Read() byte {
+	return r.data
+}

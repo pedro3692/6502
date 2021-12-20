@@ -1,8 +1,8 @@
 package memory
 
 const (
-	Size     = 65536
-	Page     = 256
+	Size     = 0xFFFF + 0x0001
+	Page     = 0x00FF + 0x0001
 	ZeroPage = 0x0
 	Stack    = 0x100
 )

@@ -16,6 +16,10 @@ func (pc *ProgramCounter) Read() [2]byte {
 	return data
 }
 
+func (pc *ProgramCounter) Check() [2]byte {
+	return pc.data
+}
+
 func (pc *ProgramCounter) Reset() {
 	pc.data = [2]byte{0xfc, 0xff}
 }

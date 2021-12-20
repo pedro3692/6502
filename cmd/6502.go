@@ -10,16 +10,19 @@ import (
 )
 
 func main() {
-	var cpu cpu.CPU
-
-	cpu.Frequency = 1.66
+	var (
+		cpu cpu.CPU
+		mem [memory.Size]byte
+	)
 
 	input, err := ioutil.ReadFile("input")
 	if err != nil {
-		log.Printf("error reading input file %s", err.Error())
+		log.Fatalf("error reading input file %s", err.Error())
 	}
 
-	var mem [memory.Size]byte
+	if len(input) != memory.Size {
+		log.Fatalln("error invalid file")
+	}
 
 	copy(mem[:], input[:])
 
@@ -32,15 +35,16 @@ func main() {
 	// mem[0xFFFD] = 0x00
 	// mem[0xFFFE] = 0x00
 	// mem[0xFFFF] = 0x00
-	fmt.Printf("mem[0x8000:0x800F] = %x\n", mem[0x8000:0x800F])
-	fmt.Printf("mem[0xFFF0:0xFFFF] = %x\n", mem[0xFFF0:0xFFFF])
+
+	fmt.Printf("[0x0000:0x000F] = %x\n", mem[0x0000:0x000F+1])
+	fmt.Printf("[0x8000:0x800F] = %x\n", mem[0x8000:0x800F+1])
+	fmt.Printf("[0x8F00:0x8F0F] = %x\n", mem[0x8F00:0x8F0F+1])
+	fmt.Printf("[0xFFF0:0xFFFF] = %x\n", mem[0xFFF0:0xFFFF+1])
+	fmt.Printf("[0xFFFC] = %x\n", mem[0xFFFC])
+	fmt.Printf("[0xFFFD] = %x\n", mem[0xFFFD])
+	fmt.Printf("[0xFFFE] = %x\n", mem[0xFFFE])
+	fmt.Printf("[0xFFFF] = %x\n", mem[0xFFFF])
 
 	cpu.Load(mem)
-
-	// var mem2 [memory.Size]byte
-	// mem2[0xFFFC] = 0xa9
-	// mem2[0xFFFD] = 0x45
-	//cpu.Load(mem2)
-
-	cpu.Start()
+	cpu.Start(1.66)
 }

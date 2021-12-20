@@ -8,7 +8,7 @@ import (
 )
 
 type CPU struct {
-	Frequency float32 // in MHz
+	frequency float32 // in MHz
 	memory    memory.Memory
 	ir        register.Register
 	a         register.Register
@@ -21,7 +21,8 @@ type CPU struct {
 
 type instructionFunc func() int
 
-func (cpu *CPU) Start() {
+func (cpu *CPU) Start(frequency float32) {
+	cpu.frequency = frequency
 	cpu.Reset()
 
 	instructionTable := cpu.createInstuctionsTable()
@@ -54,7 +55,7 @@ func (cpu *CPU) Load(mem [memory.Size]byte) {
 }
 
 func (cpu CPU) run(cycles int) {
-	time.Sleep(time.Duration(float32(cycles)*cpu.Frequency) * time.Microsecond)
+	time.Sleep(time.Duration(float32(cycles)*cpu.frequency) * time.Microsecond)
 }
 
 func (cpu *CPU) createInstuctionsTable() map[byte]instructionFunc {

@@ -41,8 +41,12 @@ func (cpu *CPU) Reset() {
 	cpu.x = register.New(&cpu.memory)
 	cpu.y = register.New(&cpu.memory)
 
-	cpu.pc.Reset()
 	cpu.sp.Reset()
+	cpu.pc.Reset()
+
+	lb := cpu.memory.Read(cpu.pc.Read())
+	hb := cpu.memory.Read(cpu.pc.Read())
+	cpu.pc.Load([2]byte{lb, hb})
 }
 
 func (cpu *CPU) Load(mem [memory.Size]byte) {

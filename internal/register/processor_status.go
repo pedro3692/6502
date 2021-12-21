@@ -4,6 +4,18 @@ type ProcessorStatus struct {
 	data byte
 }
 
+func (ps ProcessorStatus) Read() byte {
+	return ps.data
+}
+
+func (ps *ProcessorStatus) Load(data byte) {
+	ps.data = data
+}
+
+func (ps *ProcessorStatus) Reset() {
+	ps.data = byte(0b00100000)
+}
+
 func (ps ProcessorStatus) Negative() bool {
 	return (ps.data&0b10000000)>>7 == 1
 }

@@ -17,7 +17,7 @@ type CPU struct {
 	sp               register.StrackPointer
 	pc               register.ProgramCounter
 	p                register.ProcessorStatus
-	instructionTable map[byte]instructionFunc
+	instructionTable map[Instruction]instructionFunc
 	cycleCounter     int64
 }
 
@@ -33,20 +33,21 @@ func (cpu *CPU) Start(frequency float32) {
 	cpu.y = register.New(&cpu.memory)
 
 	cpu.sp.Reset()
-	cpu.pc.Reset()
 	cpu.p.Reset()
 
+	cpu.Reset()
+
 	for {
-		cpu.Step()
+		pc := cpu.memory.Read(cpu.pc.Read())
+		cpu.ir.Load(pc)
+
 		cpu.dump(false, true, true, true)
+		cpu.Step()
 	}
 }
 
 func (cpu *CPU) Step() {
-	pc := cpu.memory.Read(cpu.pc.Read())
-	cpu.ir.Load(pc)
-
-	cycles := cpu.instructionTable[cpu.ir.Read()]()
+	cycles := cpu.instructionTable[Instruction(cpu.ir.Read())]()
 	cpu.run(cycles)
 }
 
@@ -69,35 +70,36 @@ func (cpu *CPU) run(cycles int) {
 	cpu.cycleCounter += int64(cycles)
 }
 
-func (cpu *CPU) createInstuctionsTable() map[byte]instructionFunc {
-	instructionTable := make(map[byte]instructionFunc, 256)
+func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
+	instructionTable := make(map[Instruction]instructionFunc, 256)
 
-	instructionTable[0x00] = cpu.brk
+	instructionTable[BRK] = cpu.brk
+	instructionTable[RTI] = cpu.rti
 
-	instructionTable[0x4c] = cpu.jmpAbs
+	instructionTable[JMP_ABS] = cpu.jmpAbs
 
-	instructionTable[0x84] = cpu.styZp
-	instructionTable[0x85] = cpu.staZp
-	instructionTable[0x86] = cpu.stxZp
-	instructionTable[0x8c] = cpu.styAbs
-	instructionTable[0x8d] = cpu.staAbs
-	instructionTable[0x8e] = cpu.stxAbs
-	instructionTable[0x91] = cpu.staZpy
-	instructionTable[0x94] = cpu.styZpx
-	instructionTable[0x95] = cpu.staZpx
-	instructionTable[0x96] = cpu.stxZpy
-	instructionTable[0x99] = cpu.staAbsy
-	instructionTable[0x9D] = cpu.staAbsx
+	instructionTable[STY_ZP] = cpu.styZp
+	instructionTable[STA_ZP] = cpu.staZp
+	instructionTable[STX_ZP] = cpu.stxZp
+	instructionTable[STY_ABS] = cpu.styAbs
+	instructionTable[STA_ABS] = cpu.staAbs
+	instructionTable[STX_ABS] = cpu.stxAbs
+	instructionTable[STA_ZP_Y] = cpu.staZpy
+	instructionTable[STY_ZP_X] = cpu.styZpx
+	instructionTable[STA_ZP_X] = cpu.staZpx
+	instructionTable[STX_ZP_Y] = cpu.stxZpy
+	instructionTable[STA_ABS_Y] = cpu.staAbsy
+	instructionTable[STA_ABS_X] = cpu.staAbsx
 
-	instructionTable[0xa0] = cpu.ldyImm
-	instructionTable[0xa2] = cpu.ldxImm
-	instructionTable[0xa4] = cpu.ldyZp
-	instructionTable[0xa5] = cpu.ldaZp
-	instructionTable[0xa6] = cpu.ldxZp
-	instructionTable[0xa9] = cpu.ldaImm
-	instructionTable[0xac] = cpu.ldyAbs
-	instructionTable[0xad] = cpu.ldaAbs
-	instructionTable[0xae] = cpu.ldxAbs
+	instructionTable[LDY_IMM] = cpu.ldyImm
+	instructionTable[LDX_IMM] = cpu.ldxImm
+	instructionTable[LDY_ZP] = cpu.ldyZp
+	instructionTable[LDA_ZP] = cpu.ldaZp
+	instructionTable[LDX_ZP] = cpu.ldxZp
+	instructionTable[LDA_IMM] = cpu.ldaImm
+	instructionTable[LDY_ABS] = cpu.ldyAbs
+	instructionTable[LDA_ABS] = cpu.ldaAbs
+	instructionTable[LDX_ABS] = cpu.ldxAbs
 
 	return instructionTable
 }

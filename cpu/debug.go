@@ -19,12 +19,13 @@ func (cpu CPU) dump(fullMem, zpstk, registers, cycles bool) {
 
 	if registers {
 		fmt.Printf(
-			"PC: %x\nA : %x X: %x Y: %x IR: %x SP: %x\n",
+			"PC: %x\nA : %x X: %x Y: %x IR: %x[%s] SP: %x\n",
 			cpu.pc.Check(),
 			cpu.a.Read(),
 			cpu.x.Read(),
 			cpu.y.Read(),
 			cpu.ir.Read(),
+			Instruction(cpu.ir.Read()),
 			cpu.sp.Read(),
 		)
 

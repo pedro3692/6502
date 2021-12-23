@@ -78,13 +78,14 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 
 	instructionTable[JMP_ABS] = cpu.jmpAbs
 
+	instructionTable[STA_IND_X] = cpu.staIndx
 	instructionTable[STY_ZP] = cpu.styZp
 	instructionTable[STA_ZP] = cpu.staZp
 	instructionTable[STX_ZP] = cpu.stxZp
 	instructionTable[STY_ABS] = cpu.styAbs
 	instructionTable[STA_ABS] = cpu.staAbs
 	instructionTable[STX_ABS] = cpu.stxAbs
-	instructionTable[STA_ZP_Y] = cpu.staZpy
+	instructionTable[STA_IND_Y] = cpu.staIndy
 	instructionTable[STY_ZP_X] = cpu.styZpx
 	instructionTable[STA_ZP_X] = cpu.staZpx
 	instructionTable[STX_ZP_Y] = cpu.stxZpy

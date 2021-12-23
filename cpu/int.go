@@ -14,9 +14,12 @@ func (cpu *CPU) brk() int {
 	cpu.pc.Read()
 	pc := cpu.pc.Read() // PC + 2
 
-	cpu.memory.StackPush(cpu.sp.Inc(), pc[1])        // push PCH
-	cpu.memory.StackPush(cpu.sp.Inc(), pc[0])        // push PCL
-	cpu.memory.StackPush(cpu.sp.Inc(), cpu.p.Read()) // push P
+	cpu.memory.StackPush(cpu.sp.Read(), pc[1]) // push PCH
+	cpu.sp.Inc()
+	cpu.memory.StackPush(cpu.sp.Read(), pc[0]) // push PCL
+	cpu.sp.Inc()
+	cpu.memory.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
+	cpu.sp.Inc()
 
 	pcl := cpu.memory.Read([2]byte{0xfe, 0xff})
 	pch := cpu.memory.Read([2]byte{0xff, 0xff})
@@ -29,9 +32,12 @@ func (cpu *CPU) brk() int {
 func (cpu *CPU) rti() int {
 	cpu.pc.Read()
 
-	cpu.p.Load(cpu.memory.StackPull(cpu.sp.Dec())) // pull P
-	pcl := cpu.memory.StackPull(cpu.sp.Dec())      // pull PCL
-	pch := cpu.memory.StackPull(cpu.sp.Dec())      // pull PCH
+	cpu.p.Load(cpu.memory.StackPull(cpu.sp.Read())) // pull P
+	cpu.sp.Dec()
+	pcl := cpu.memory.StackPull(cpu.sp.Read()) // pull PCL
+	cpu.sp.Dec()
+	pch := cpu.memory.StackPull(cpu.sp.Read()) // pull PCH
+	cpu.sp.Dec()
 
 	cpu.pc.Load([2]byte{pcl, pch})
 

@@ -11,13 +11,14 @@ func _() {
 	_ = x[BRK-0]
 	_ = x[RTI-64]
 	_ = x[JMP_ABS-76]
+	_ = x[STA_IND_X-129]
 	_ = x[STY_ZP-132]
 	_ = x[STA_ZP-133]
 	_ = x[STX_ZP-134]
 	_ = x[STY_ABS-140]
 	_ = x[STA_ABS-141]
 	_ = x[STX_ABS-142]
-	_ = x[STA_ZP_Y-145]
+	_ = x[STA_IND_Y-145]
 	_ = x[STY_ZP_X-148]
 	_ = x[STA_ZP_X-149]
 	_ = x[STX_ZP_Y-150]
@@ -34,33 +35,34 @@ func _() {
 	_ = x[LDX_ABS-174]
 }
 
-const _Instruction_name = "BRKRTIJMP_ABSSTY_ZPSTA_ZPSTX_ZPSTY_ABSSTA_ABSSTX_ABSSTA_ZP_YSTY_ZP_XSTA_ZP_XSTX_ZP_YSTA_ABS_YSTA_ABS_XLDY_IMMLDX_IMMLDY_ZPLDA_ZPLDX_ZPLDA_IMMLDY_ABSLDA_ABSLDX_ABS"
+const _Instruction_name = "BRKRTIJMP_ABSSTA_IND_XSTY_ZPSTA_ZPSTX_ZPSTY_ABSSTA_ABSSTX_ABSSTA_IND_YSTY_ZP_XSTA_ZP_XSTX_ZP_YSTA_ABS_YSTA_ABS_XLDY_IMMLDX_IMMLDY_ZPLDA_ZPLDX_ZPLDA_IMMLDY_ABSLDA_ABSLDX_ABS"
 
 var _Instruction_map = map[Instruction]string{
 	0:   _Instruction_name[0:3],
 	64:  _Instruction_name[3:6],
 	76:  _Instruction_name[6:13],
-	132: _Instruction_name[13:19],
-	133: _Instruction_name[19:25],
-	134: _Instruction_name[25:31],
-	140: _Instruction_name[31:38],
-	141: _Instruction_name[38:45],
-	142: _Instruction_name[45:52],
-	145: _Instruction_name[52:60],
-	148: _Instruction_name[60:68],
-	149: _Instruction_name[68:76],
-	150: _Instruction_name[76:84],
-	153: _Instruction_name[84:93],
-	157: _Instruction_name[93:102],
-	160: _Instruction_name[102:109],
-	162: _Instruction_name[109:116],
-	164: _Instruction_name[116:122],
-	165: _Instruction_name[122:128],
-	166: _Instruction_name[128:134],
-	169: _Instruction_name[134:141],
-	172: _Instruction_name[141:148],
-	173: _Instruction_name[148:155],
-	174: _Instruction_name[155:162],
+	129: _Instruction_name[13:22],
+	132: _Instruction_name[22:28],
+	133: _Instruction_name[28:34],
+	134: _Instruction_name[34:40],
+	140: _Instruction_name[40:47],
+	141: _Instruction_name[47:54],
+	142: _Instruction_name[54:61],
+	145: _Instruction_name[61:70],
+	148: _Instruction_name[70:78],
+	149: _Instruction_name[78:86],
+	150: _Instruction_name[86:94],
+	153: _Instruction_name[94:103],
+	157: _Instruction_name[103:112],
+	160: _Instruction_name[112:119],
+	162: _Instruction_name[119:126],
+	164: _Instruction_name[126:132],
+	165: _Instruction_name[132:138],
+	166: _Instruction_name[138:144],
+	169: _Instruction_name[144:151],
+	172: _Instruction_name[151:158],
+	173: _Instruction_name[158:165],
+	174: _Instruction_name[165:172],
 }
 
 func (i Instruction) String() string {

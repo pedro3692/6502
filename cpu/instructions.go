@@ -7,13 +7,14 @@ const (
 	BRK       Instruction = 0x00
 	RTI       Instruction = 0x40
 	JMP_ABS   Instruction = 0x4c
+	STA_IND_X Instruction = 0x81
 	STY_ZP    Instruction = 0x84
 	STA_ZP    Instruction = 0x85
 	STX_ZP    Instruction = 0x86
 	STY_ABS   Instruction = 0x8c
 	STA_ABS   Instruction = 0x8d
 	STX_ABS   Instruction = 0x8e
-	STA_ZP_Y  Instruction = 0x91
+	STA_IND_Y Instruction = 0x91
 	STY_ZP_X  Instruction = 0x94
 	STA_ZP_X  Instruction = 0x95
 	STX_ZP_Y  Instruction = 0x96

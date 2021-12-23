@@ -3,13 +3,14 @@ package cpu
 import "github.com/pedro3692/6502/internal/register"
 
 const (
-	stAbsCost    = 4
-	stZpCost     = 3
-	stZpxCost    = 4
-	stZpyCost    = 4
-	stAbsxCost   = 5
-	stAbsyCost   = 5
-	stZpIndyCost = 6
+	stAbsCost   = 4
+	stZpCost    = 3
+	stZpxCost   = 4
+	stZpyCost   = 4
+	stAbsxCost  = 5
+	stAbsyCost  = 5
+	stAIndxCost = 6
+	stAIndyCost = 6
 )
 
 func (cpu *CPU) staAbs() int {
@@ -84,12 +85,26 @@ func (cpu *CPU) staAbsy() int {
 	return cost
 }
 
-func (cpu *CPU) staZpy() int {
+func (cpu *CPU) staIndx() int {
+	baseLb := cpu.memory.Read(cpu.pc.Read())
 
+	lbSum := int16(baseLb) + int16(cpu.x.Read())
+
+	lb := cpu.memory.Read([2]byte{byte(lbSum & 0xFF), 0x00})
+
+	baseHb := byte((int16(lb) + int16(0x01)) & 0xFF)
+	hb := cpu.memory.Read([2]byte{baseHb, 0x00})
+
+	cpu.a.Store([2]byte{lb, hb})
+
+	return stAIndxCost
+}
+
+func (cpu *CPU) staIndy() int {
 	baseLb := cpu.memory.Read(cpu.pc.Read())
 	baseHb := cpu.memory.Read([2]byte{baseLb + 0x01, 0x00})
 
-	lbSum := int16(cpu.memory.Read([2]byte{baseLb, 0x00}) + cpu.y.Read())
+	lbSum := int16(cpu.memory.Read([2]byte{baseLb, 0x00})) + int16(cpu.y.Read())
 
 	lb := byte(lbSum & 0xFF)
 	overflow := byte(lbSum >> 8)
@@ -97,7 +112,7 @@ func (cpu *CPU) staZpy() int {
 
 	cpu.a.Store([2]byte{lb, hb})
 
-	return stZpIndyCost
+	return stAIndyCost
 }
 
 func (cpu *CPU) stxZpy() int {

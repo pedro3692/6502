@@ -3,6 +3,8 @@ package cpu
 const (
 	brkCost = 7
 	rtiCost = 6
+	nmiCost = 7
+	irqCost = 7
 )
 
 func (cpu *CPU) brk() int {
@@ -40,4 +42,48 @@ func (cpu *CPU) rti() int {
 	cpu.pc.Load([2]byte{pcl, pch})
 
 	return rtiCost
+}
+
+func (cpu *CPU) nmi() int {
+	cpu.p.ResetBreak()
+
+	pc := cpu.pc.Check()
+
+	cpu.memory.StackPush(cpu.sp.Read(), pc[1]) // push PCH
+	cpu.sp.Inc()
+	cpu.memory.StackPush(cpu.sp.Read(), pc[0]) // push PCL
+	cpu.sp.Inc()
+	cpu.memory.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
+	cpu.sp.Inc()
+
+	cpu.p.SetIRQBDisable()
+
+	pcl := cpu.memory.Read([2]byte{0xfa, 0xff})
+	pch := cpu.memory.Read([2]byte{0xfb, 0xff})
+
+	cpu.pc.Load([2]byte{pcl, pch})
+
+	return nmiCost
+}
+
+func (cpu *CPU) irq() int {
+	cpu.p.ResetBreak()
+
+	pc := cpu.pc.Check()
+
+	cpu.memory.StackPush(cpu.sp.Read(), pc[1]) // push PCH
+	cpu.sp.Inc()
+	cpu.memory.StackPush(cpu.sp.Read(), pc[0]) // push PCL
+	cpu.sp.Inc()
+	cpu.memory.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
+	cpu.sp.Inc()
+
+	cpu.p.SetIRQBDisable()
+
+	pcl := cpu.memory.Read([2]byte{0xfe, 0xff})
+	pch := cpu.memory.Read([2]byte{0xff, 0xff})
+
+	cpu.pc.Load([2]byte{pcl, pch})
+
+	return irqCost
 }

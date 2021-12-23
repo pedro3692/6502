@@ -34,3 +34,9 @@ func (m *Memory) StackPush(address byte, data byte) {
 func (m *Memory) StackPull(address byte) byte {
 	return m.memory[uint16(address)+0x100]
 }
+
+func New(mem [Size]byte) Memory {
+	return Memory{
+		memory: mem,
+	}
+}

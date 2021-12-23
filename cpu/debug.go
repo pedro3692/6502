@@ -5,15 +5,15 @@ import "fmt"
 func (cpu CPU) dump(fullMem, zpstk, registers, cycles bool) {
 	if fullMem {
 		fmt.Printf(
-			"Memory: %x\n", cpu.memory.Dump(),
+			"Memory: %x\n", cpu.bus.Dump(0x0, 0xffff),
 		)
 	}
 
 	if zpstk {
 		fmt.Printf(
 			"Zero Page: %x\nStack: %x\n",
-			cpu.memory.DumpZeroPage(),
-			cpu.memory.DumpStack(),
+			cpu.DumpZeroPage(),
+			cpu.DumpStack(),
 		)
 	}
 
@@ -47,4 +47,12 @@ func (cpu CPU) dump(fullMem, zpstk, registers, cycles bool) {
 		fmt.Printf("cycle: %d\n", cpu.cycleCounter)
 	}
 
+}
+
+func (cpu CPU) DumpZeroPage() []byte {
+	return cpu.bus.Dump(0x00, 0xff)
+}
+
+func (cpu CPU) DumpStack() []byte {
+	return cpu.bus.Dump(0x00, 0xff)
 }

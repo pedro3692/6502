@@ -44,8 +44,8 @@ func (cpu *CPU) staZpx() int {
 func (cpu *CPU) staAbsx() int {
 	cost := stAbsxCost
 
-	baseLb := cpu.memory.Read(cpu.pc.Read())
-	baseHb := cpu.memory.Read(cpu.pc.Read())
+	baseLb := cpu.bus.Read(cpu.pc.Read())
+	baseHb := cpu.bus.Read(cpu.pc.Read())
 
 	x := cpu.x.Read()
 
@@ -66,8 +66,8 @@ func (cpu *CPU) staAbsx() int {
 func (cpu *CPU) staAbsy() int {
 	cost := stAbsyCost
 
-	baseLb := cpu.memory.Read(cpu.pc.Read())
-	baseHb := cpu.memory.Read(cpu.pc.Read())
+	baseLb := cpu.bus.Read(cpu.pc.Read())
+	baseHb := cpu.bus.Read(cpu.pc.Read())
 
 	y := cpu.y.Read()
 
@@ -86,14 +86,14 @@ func (cpu *CPU) staAbsy() int {
 }
 
 func (cpu *CPU) staIndx() int {
-	baseLb := cpu.memory.Read(cpu.pc.Read())
+	baseLb := cpu.bus.Read(cpu.pc.Read())
 
 	lbSum := int16(baseLb) + int16(cpu.x.Read())
 
-	lb := cpu.memory.Read([2]byte{byte(lbSum & 0xFF), 0x00})
+	lb := cpu.bus.Read([2]byte{byte(lbSum & 0xFF), 0x00})
 
 	baseHb := byte((int16(lb) + int16(0x01)) & 0xFF)
-	hb := cpu.memory.Read([2]byte{baseHb, 0x00})
+	hb := cpu.bus.Read([2]byte{baseHb, 0x00})
 
 	cpu.a.Store([2]byte{lb, hb})
 
@@ -101,10 +101,10 @@ func (cpu *CPU) staIndx() int {
 }
 
 func (cpu *CPU) staIndy() int {
-	baseLb := cpu.memory.Read(cpu.pc.Read())
-	baseHb := cpu.memory.Read([2]byte{baseLb + 0x01, 0x00})
+	baseLb := cpu.bus.Read(cpu.pc.Read())
+	baseHb := cpu.bus.Read([2]byte{baseLb + 0x01, 0x00})
 
-	lbSum := int16(cpu.memory.Read([2]byte{baseLb, 0x00})) + int16(cpu.y.Read())
+	lbSum := int16(cpu.bus.Read([2]byte{baseLb, 0x00})) + int16(cpu.y.Read())
 
 	lb := byte(lbSum & 0xFF)
 	overflow := byte(lbSum >> 8)
@@ -117,7 +117,7 @@ func (cpu *CPU) staIndy() int {
 
 func (cpu *CPU) stxZpy() int {
 	lb := byte(0xff)
-	base := cpu.memory.Read(cpu.pc.Read())
+	base := cpu.bus.Read(cpu.pc.Read())
 	y := cpu.y.Read()
 
 	if int16(base+y) < 0x100 {
@@ -142,14 +142,14 @@ func (cpu *CPU) stAbs(r *register.Register) int {
 }
 
 func (cpu *CPU) stZp(r *register.Register) int {
-	r.Store([2]byte{cpu.memory.Read(cpu.pc.Read()), 0x00})
+	r.Store([2]byte{cpu.bus.Read(cpu.pc.Read()), 0x00})
 
 	return stZpCost
 }
 
 func (cpu *CPU) stZpx(r *register.Register) int {
 	lb := byte(0xff)
-	base := cpu.memory.Read(cpu.pc.Read())
+	base := cpu.bus.Read(cpu.pc.Read())
 	x := cpu.x.Read()
 
 	if int16(base+x) < 0x100 {

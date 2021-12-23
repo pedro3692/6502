@@ -3,13 +3,22 @@ package cpu
 import (
 	"time"
 
-	"github.com/pedro3692/6502/internal/memory"
 	"github.com/pedro3692/6502/internal/register"
 )
 
+const BusSize uint = 0xFFFF + 0x1
+
+type Bus interface {
+	Store([2]byte, byte)
+	Read([2]byte) byte
+	StackPush(byte, byte)
+	StackPull(byte) byte
+	Dump(uint16, uint16) []byte
+}
+
 type CPU struct {
 	frequency        float32 // in MHz
-	memory           memory.Memory
+	bus              Bus
 	ir               register.Register
 	a                register.Register
 	x                register.Register
@@ -28,9 +37,9 @@ func (cpu *CPU) Start(frequency float32) {
 	cpu.frequency = frequency
 
 	// init registers
-	cpu.a = register.New(&cpu.memory)
-	cpu.x = register.New(&cpu.memory)
-	cpu.y = register.New(&cpu.memory)
+	cpu.a = register.New(cpu.bus)
+	cpu.x = register.New(cpu.bus)
+	cpu.y = register.New(cpu.bus)
 
 	cpu.sp.Reset()
 	cpu.p.Reset()
@@ -38,7 +47,7 @@ func (cpu *CPU) Start(frequency float32) {
 	cpu.Reset()
 
 	for {
-		pc := cpu.memory.Read(cpu.pc.Read())
+		pc := cpu.bus.Read(cpu.pc.Read())
 		cpu.ir.Load(pc)
 
 		cpu.dump(false, true, true, true)
@@ -55,14 +64,10 @@ func (cpu *CPU) Reset() {
 	cpu.pc.Reset()
 
 	// load reset vector
-	lb := cpu.memory.Read(cpu.pc.Read())
-	hb := cpu.memory.Read(cpu.pc.Read())
+	lb := cpu.bus.Read(cpu.pc.Read())
+	hb := cpu.bus.Read(cpu.pc.Read())
 
 	cpu.pc.Load([2]byte{lb, hb})
-}
-
-func (cpu *CPU) Load(mem [memory.Size]byte) {
-	cpu.memory.Set(mem)
 }
 
 func (cpu *CPU) run(cycles int) {
@@ -103,4 +108,10 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable[LDX_ABS] = cpu.ldxAbs
 
 	return instructionTable
+}
+
+func New(bus Bus) CPU {
+	return CPU{
+		bus: bus,
+	}
 }

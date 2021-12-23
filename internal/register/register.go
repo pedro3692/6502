@@ -1,12 +1,13 @@
 package register
 
-import (
-	"github.com/pedro3692/6502/internal/memory"
-)
+type Memory interface {
+	Store([2]byte, byte)
+	Read([2]byte) byte
+}
 
 type Register struct {
 	data   byte
-	memory *memory.Memory
+	memory Memory
 }
 
 func (r *Register) Load(b byte) {
@@ -21,7 +22,7 @@ func (r Register) Read() byte {
 	return r.data
 }
 
-func New(mem *memory.Memory) Register {
+func New(mem Memory) Register {
 	return Register{
 		memory: mem,
 	}

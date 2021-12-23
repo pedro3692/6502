@@ -1,13 +1,5 @@
 package memory
 
-func (m Memory) DumpStack() []byte {
-	return m.memory[0x100 : 0x1ff+1]
-}
-
-func (m Memory) DumpZeroPage() []byte {
-	return m.memory[0x000 : 0x0ff+1]
-}
-
-func (m Memory) Dump() []byte {
-	return m.memory[:]
+func (m Memory) Dump(from uint16, to uint16) []byte {
+	return m.memory[from : to+1]
 }

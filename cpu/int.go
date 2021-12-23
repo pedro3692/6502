@@ -11,18 +11,18 @@ func (cpu *CPU) brk() int {
 	cpu.pc.Read()
 	pc := cpu.pc.Read() // PC + 2
 
-	cpu.memory.StackPush(cpu.sp.Read(), pc[1]) // push PCH
+	cpu.bus.StackPush(cpu.sp.Read(), pc[1]) // push PCH
 	cpu.sp.Inc()
-	cpu.memory.StackPush(cpu.sp.Read(), pc[0]) // push PCL
+	cpu.bus.StackPush(cpu.sp.Read(), pc[0]) // push PCL
 	cpu.sp.Inc()
-	cpu.memory.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
+	cpu.bus.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
 	cpu.sp.Inc()
 
 	cpu.p.SetBreak()
 	cpu.p.SetIRQBDisable()
 
-	pcl := cpu.memory.Read([2]byte{0xfe, 0xff})
-	pch := cpu.memory.Read([2]byte{0xff, 0xff})
+	pcl := cpu.bus.Read([2]byte{0xfe, 0xff})
+	pch := cpu.bus.Read([2]byte{0xff, 0xff})
 
 	cpu.pc.Load([2]byte{pcl, pch})
 
@@ -33,11 +33,11 @@ func (cpu *CPU) rti() int {
 	cpu.pc.Read()
 
 	cpu.sp.Dec()
-	cpu.p.Load(cpu.memory.StackPull(cpu.sp.Read())) // pull P
+	cpu.p.Load(cpu.bus.StackPull(cpu.sp.Read())) // pull P
 	cpu.sp.Dec()
-	pcl := cpu.memory.StackPull(cpu.sp.Read()) // pull PCL
+	pcl := cpu.bus.StackPull(cpu.sp.Read()) // pull PCL
 	cpu.sp.Dec()
-	pch := cpu.memory.StackPull(cpu.sp.Read()) // pull PCH
+	pch := cpu.bus.StackPull(cpu.sp.Read()) // pull PCH
 
 	cpu.pc.Load([2]byte{pcl, pch})
 
@@ -49,17 +49,17 @@ func (cpu *CPU) nmi() int {
 
 	pc := cpu.pc.Check()
 
-	cpu.memory.StackPush(cpu.sp.Read(), pc[1]) // push PCH
+	cpu.bus.StackPush(cpu.sp.Read(), pc[1]) // push PCH
 	cpu.sp.Inc()
-	cpu.memory.StackPush(cpu.sp.Read(), pc[0]) // push PCL
+	cpu.bus.StackPush(cpu.sp.Read(), pc[0]) // push PCL
 	cpu.sp.Inc()
-	cpu.memory.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
+	cpu.bus.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
 	cpu.sp.Inc()
 
 	cpu.p.SetIRQBDisable()
 
-	pcl := cpu.memory.Read([2]byte{0xfa, 0xff})
-	pch := cpu.memory.Read([2]byte{0xfb, 0xff})
+	pcl := cpu.bus.Read([2]byte{0xfa, 0xff})
+	pch := cpu.bus.Read([2]byte{0xfb, 0xff})
 
 	cpu.pc.Load([2]byte{pcl, pch})
 
@@ -71,17 +71,17 @@ func (cpu *CPU) irq() int {
 
 	pc := cpu.pc.Check()
 
-	cpu.memory.StackPush(cpu.sp.Read(), pc[1]) // push PCH
+	cpu.bus.StackPush(cpu.sp.Read(), pc[1]) // push PCH
 	cpu.sp.Inc()
-	cpu.memory.StackPush(cpu.sp.Read(), pc[0]) // push PCL
+	cpu.bus.StackPush(cpu.sp.Read(), pc[0]) // push PCL
 	cpu.sp.Inc()
-	cpu.memory.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
+	cpu.bus.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
 	cpu.sp.Inc()
 
 	cpu.p.SetIRQBDisable()
 
-	pcl := cpu.memory.Read([2]byte{0xfe, 0xff})
-	pch := cpu.memory.Read([2]byte{0xff, 0xff})
+	pcl := cpu.bus.Read([2]byte{0xfe, 0xff})
+	pch := cpu.bus.Read([2]byte{0xff, 0xff})
 
 	cpu.pc.Load([2]byte{pcl, pch})
 

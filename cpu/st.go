@@ -49,14 +49,14 @@ func (cpu *CPU) staAbsx() int {
 
 	x := cpu.x.Read()
 
-	addr := int16(baseLb) | int16(baseHb)<<8 + int16(x)
+	addr := uint16(baseLb) | uint16(baseHb)<<8 + uint16(x)
 
 	lb := byte(addr & 0xFF)
 	hb := byte(addr >> 8)
 
 	cpu.a.Store([2]byte{lb, hb})
 
-	if int16(baseLb+x) >= 0x100 {
+	if uint16(baseLb+x) >= 0x100 {
 		cost++
 	}
 
@@ -71,14 +71,14 @@ func (cpu *CPU) staAbsy() int {
 
 	y := cpu.y.Read()
 
-	addr := int16(baseLb) | int16(baseHb)<<8 + int16(y)
+	addr := uint16(baseLb) | uint16(baseHb)<<8 + uint16(y)
 
 	lb := byte(addr & 0xFF)
 	hb := byte(addr >> 8)
 
 	cpu.a.Store([2]byte{lb, hb})
 
-	if int16(baseLb+y) >= 0x100 {
+	if uint16(baseLb+y) >= 0x100 {
 		cost++
 	}
 
@@ -88,11 +88,11 @@ func (cpu *CPU) staAbsy() int {
 func (cpu *CPU) staIndx() int {
 	baseLb := cpu.bus.Read(cpu.pc.Read())
 
-	lbSum := int16(baseLb) + int16(cpu.x.Read())
+	lbSum := uint16(baseLb) + uint16(cpu.x.Read())
 
 	lb := cpu.bus.Read([2]byte{byte(lbSum & 0xFF), 0x00})
 
-	baseHb := byte((int16(lb) + int16(0x01)) & 0xFF)
+	baseHb := byte((uint16(lb) + uint16(0x01)) & 0xFF)
 	hb := cpu.bus.Read([2]byte{baseHb, 0x00})
 
 	cpu.a.Store([2]byte{lb, hb})
@@ -104,7 +104,7 @@ func (cpu *CPU) staIndy() int {
 	baseLb := cpu.bus.Read(cpu.pc.Read())
 	baseHb := cpu.bus.Read([2]byte{baseLb + 0x01, 0x00})
 
-	lbSum := int16(cpu.bus.Read([2]byte{baseLb, 0x00})) + int16(cpu.y.Read())
+	lbSum := uint16(cpu.bus.Read([2]byte{baseLb, 0x00})) + uint16(cpu.y.Read())
 
 	lb := byte(lbSum & 0xFF)
 	overflow := byte(lbSum >> 8)
@@ -120,7 +120,7 @@ func (cpu *CPU) stxZpy() int {
 	base := cpu.bus.Read(cpu.pc.Read())
 	y := cpu.y.Read()
 
-	if int16(base+y) < 0x100 {
+	if uint16(base+y) < 0x100 {
 		lb = base + y
 	}
 
@@ -152,7 +152,7 @@ func (cpu *CPU) stZpx(r *register.Register) int {
 	base := cpu.bus.Read(cpu.pc.Read())
 	x := cpu.x.Read()
 
-	if int16(base+x) < 0x100 {
+	if uint16(base+x) < 0x100 {
 		lb = base + x
 	}
 

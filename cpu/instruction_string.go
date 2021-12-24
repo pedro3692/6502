@@ -33,9 +33,10 @@ func _() {
 	_ = x[LDY_ABS-172]
 	_ = x[LDA_ABS-173]
 	_ = x[LDX_ABS-174]
+	_ = x[NOP-234]
 }
 
-const _Instruction_name = "BRKRTIJMP_ABSSTA_IND_XSTY_ZPSTA_ZPSTX_ZPSTY_ABSSTA_ABSSTX_ABSSTA_IND_YSTY_ZP_XSTA_ZP_XSTX_ZP_YSTA_ABS_YSTA_ABS_XLDY_IMMLDX_IMMLDY_ZPLDA_ZPLDX_ZPLDA_IMMLDY_ABSLDA_ABSLDX_ABS"
+const _Instruction_name = "BRKRTIJMP_ABSSTA_IND_XSTY_ZPSTA_ZPSTX_ZPSTY_ABSSTA_ABSSTX_ABSSTA_IND_YSTY_ZP_XSTA_ZP_XSTX_ZP_YSTA_ABS_YSTA_ABS_XLDY_IMMLDX_IMMLDY_ZPLDA_ZPLDX_ZPLDA_IMMLDY_ABSLDA_ABSLDX_ABSNOP"
 
 var _Instruction_map = map[Instruction]string{
 	0:   _Instruction_name[0:3],
@@ -63,6 +64,7 @@ var _Instruction_map = map[Instruction]string{
 	172: _Instruction_name[151:158],
 	173: _Instruction_name[158:165],
 	174: _Instruction_name[165:172],
+	234: _Instruction_name[172:175],
 }
 
 func (i Instruction) String() string {

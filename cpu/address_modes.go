@@ -22,7 +22,7 @@ func (cpu *CPU) zpx() byte {
 	base := cpu.bus.Read(cpu.pc.Read())
 	x := cpu.x.Read()
 
-	if int16(base+x) < 0x100 {
+	if uint16(base+x) < 0x100 {
 		lb = base + x
 	}
 

@@ -29,4 +29,5 @@ const (
 	LDY_ABS   Instruction = 0xac
 	LDA_ABS   Instruction = 0xad
 	LDX_ABS   Instruction = 0xae
+	NOP       Instruction = 0xea
 )

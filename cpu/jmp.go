@@ -1,6 +1,10 @@
 package cpu
 
-const jmpAbsCost = 3
+const (
+	jmpAbsCost = 3
+	jmpIndCost = 5
+	jsrCost    = 6
+)
 
 func (cpu *CPU) jmpAbs() int {
 	pcl := cpu.bus.Read(cpu.pc.Read())

@@ -107,6 +107,8 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable[LDA_ABS] = cpu.ldaAbs
 	instructionTable[LDX_ABS] = cpu.ldxAbs
 
+	instructionTable[NOP] = cpu.nop
+
 	return instructionTable
 }
 

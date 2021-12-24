@@ -19,6 +19,7 @@ func (cpu *CPU) brk() int {
 	cpu.sp.Inc()
 
 	cpu.p.SetBreak()
+	cpu.p.ResetDecimalMode()
 	cpu.p.SetIRQBDisable()
 
 	pcl := cpu.bus.Read([2]byte{0xfe, 0xff})

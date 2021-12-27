@@ -96,5 +96,11 @@ func (cpu *CPU) adc(data byte) {
 		cpu.p.SetCarry()
 	}
 
-	cpu.a.Load(byte(sum & 0xFF))
+	byteSum := byte(sum & 0xFF)
+
+	if byteSum>>7 == 1 {
+		cpu.p.SetNegative()
+	}
+
+	cpu.a.Load(byteSum)
 }

@@ -26,23 +26,23 @@ func (cpu *CPU) sei() int {
 func (cpu *CPU) clc() int {
 	cpu.p.ResetCarry()
 
-	return setCost
+	return clearCost
 }
 
 func (cpu *CPU) cld() int {
 	cpu.p.ResetDecimalMode()
 
-	return setCost
+	return clearCost
 }
 
 func (cpu *CPU) cli() int {
 	cpu.p.ResetIRQBDisable()
 
-	return setCost
+	return clearCost
 }
 
 func (cpu *CPU) clv() int {
 	cpu.p.ResetOverflow()
 
-	return setCost
+	return clearCost
 }

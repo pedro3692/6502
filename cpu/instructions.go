@@ -42,11 +42,25 @@ const (
 	LDA_ABS   Instruction = 0xad
 	LDX_ABS   Instruction = 0xae
 	CLV       Instruction = 0xb8
+	CPY_IMM   Instruction = 0xc0
+	CMP_IND_X Instruction = 0xc1
+	CPY_ZP    Instruction = 0xc4
+	CMP_ZP    Instruction = 0xc5
+	CMP_IMM   Instruction = 0xc9
+	CPY_ABS   Instruction = 0xcc
+	CMP_ABS   Instruction = 0xcd
+	CMP_IND_Y Instruction = 0xd1
+	CMP_ZP_X  Instruction = 0xd5
 	CLD       Instruction = 0xd8
+	CMP_ABS_Y Instruction = 0xd9
+	CMP_ABS_X Instruction = 0xdd
+	CPX_IMM   Instruction = 0xe0
 	SBC_IND_X Instruction = 0xe1
+	CPX_ZP    Instruction = 0xe4
 	SBC_ZP    Instruction = 0xe5
 	SBC_IMM   Instruction = 0xe9
 	NOP       Instruction = 0xea
+	CPX_ABS   Instruction = 0xec
 	SBC_ABS   Instruction = 0xed
 	SBC_IND_Y Instruction = 0xf1
 	SBC_ZP_X  Instruction = 0xf5
@@ -108,11 +122,33 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable[LDA_ABS] = cpu.ldaAbs
 	instructionTable[LDX_ABS] = cpu.ldxAbs
 
+	instructionTable[CPY_IMM] = cpu.cpyImm
+	instructionTable[CMP_IND_X] = cpu.cmpIndx
+	instructionTable[CPY_ZP] = cpu.cpyZp
+	instructionTable[CMP_ZP] = cpu.cmpZp
+	instructionTable[CMP_IMM] = cpu.cmpImm
+	instructionTable[CPY_ABS] = cpu.cpyAbs
+	instructionTable[CMP_ABS] = cpu.cmpAbs
+	instructionTable[CMP_IND_Y] = cpu.cmpIndy
+	instructionTable[CMP_ZP_X] = cpu.cmpZpx
+
 	instructionTable[CLD] = cpu.cld
 
+	instructionTable[CMP_ABS_Y] = cpu.cmpAbsy
+	instructionTable[CMP_ABS_X] = cpu.cmpAbsx
+	instructionTable[CPX_IMM] = cpu.cpxImm
+
 	instructionTable[SBC_IND_X] = cpu.sbcIndx
+
+	instructionTable[CPX_ZP] = cpu.cpxZp
+
 	instructionTable[SBC_ZP] = cpu.sbcZp
 	instructionTable[SBC_IMM] = cpu.sbcImm
+
+	instructionTable[NOP] = cpu.nop
+
+	instructionTable[CPX_ABS] = cpu.cpxAbs
+
 	instructionTable[SBC_ABS] = cpu.sbcAbs
 	instructionTable[SBC_IND_Y] = cpu.sbcIndy
 	instructionTable[SBC_ZP_X] = cpu.sbcZpx
@@ -122,8 +158,6 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable[SBC_ABS_Y] = cpu.sbcAbsy
 	instructionTable[SBC_ABS_X] = cpu.sbcAbsx
 	instructionTable[SBC_ZP_X] = cpu.sbcZpx
-
-	instructionTable[NOP] = cpu.nop
 
 	return instructionTable
 }

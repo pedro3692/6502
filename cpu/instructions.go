@@ -5,9 +5,11 @@ type Instruction byte
 
 const (
 	BRK       Instruction = 0x00
+	CLC       Instruction = 0x18
 	SEC       Instruction = 0x38
 	RTI       Instruction = 0x40
 	JMP_ABS   Instruction = 0x4c
+	CLI       Instruction = 0x58
 	ADC_IND_X Instruction = 0x61
 	ADC_ZP    Instruction = 0x65
 	ADC_IMM   Instruction = 0x69
@@ -39,6 +41,8 @@ const (
 	LDY_ABS   Instruction = 0xac
 	LDA_ABS   Instruction = 0xad
 	LDX_ABS   Instruction = 0xae
+	CLV       Instruction = 0xb8
+	CLD       Instruction = 0xd8
 	SBC_IND_X Instruction = 0xe1
 	SBC_ZP    Instruction = 0xe5
 	SBC_IMM   Instruction = 0xe9
@@ -55,11 +59,17 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable := make(map[Instruction]instructionFunc, 256)
 
 	instructionTable[BRK] = cpu.brk
+
+	instructionTable[CLC] = cpu.clc
+
 	instructionTable[RTI] = cpu.rti
 
 	instructionTable[SEC] = cpu.sec
 
 	instructionTable[JMP_ABS] = cpu.jmpAbs
+
+	instructionTable[CLV] = cpu.clv
+	instructionTable[CLI] = cpu.cli
 
 	instructionTable[ADC_IND_X] = cpu.adcIndx
 	instructionTable[ADC_ZP] = cpu.adcZp
@@ -97,6 +107,8 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable[LDY_ABS] = cpu.ldyAbs
 	instructionTable[LDA_ABS] = cpu.ldaAbs
 	instructionTable[LDX_ABS] = cpu.ldxAbs
+
+	instructionTable[CLD] = cpu.cld
 
 	instructionTable[SBC_IND_X] = cpu.sbcIndx
 	instructionTable[SBC_ZP] = cpu.sbcZp

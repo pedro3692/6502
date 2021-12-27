@@ -9,8 +9,20 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[BRK-0]
+	_ = x[CLC-24]
+	_ = x[SEC-56]
 	_ = x[RTI-64]
 	_ = x[JMP_ABS-76]
+	_ = x[CLI-88]
+	_ = x[ADC_IND_X-97]
+	_ = x[ADC_ZP-101]
+	_ = x[ADC_IMM-105]
+	_ = x[ADC_ABS-109]
+	_ = x[ADC_IND_Y-113]
+	_ = x[ADC_ZP_X-117]
+	_ = x[SEI-120]
+	_ = x[ADC_ABS_Y-121]
+	_ = x[ADC_ABS_X-125]
 	_ = x[STA_IND_X-129]
 	_ = x[STY_ZP-132]
 	_ = x[STA_ZP-133]
@@ -33,38 +45,100 @@ func _() {
 	_ = x[LDY_ABS-172]
 	_ = x[LDA_ABS-173]
 	_ = x[LDX_ABS-174]
+	_ = x[CLV-184]
+	_ = x[CPY_IMM-192]
+	_ = x[CMP_IND_X-193]
+	_ = x[CPY_ZP-196]
+	_ = x[CMP_ZP-197]
+	_ = x[CMP_IMM-201]
+	_ = x[CPY_ABS-204]
+	_ = x[CMP_ABS-205]
+	_ = x[CMP_IND_Y-209]
+	_ = x[CMP_ZP_X-213]
+	_ = x[CLD-216]
+	_ = x[CMP_ABS_Y-217]
+	_ = x[CMP_ABS_X-221]
+	_ = x[CPX_IMM-224]
+	_ = x[SBC_IND_X-225]
+	_ = x[CPX_ZP-228]
+	_ = x[SBC_ZP-229]
+	_ = x[SBC_IMM-233]
 	_ = x[NOP-234]
+	_ = x[CPX_ABS-236]
+	_ = x[SBC_ABS-237]
+	_ = x[SBC_IND_Y-241]
+	_ = x[SBC_ZP_X-245]
+	_ = x[SED-248]
+	_ = x[SBC_ABS_Y-249]
+	_ = x[SBC_ABS_X-253]
 }
 
-const _Instruction_name = "BRKRTIJMP_ABSSTA_IND_XSTY_ZPSTA_ZPSTX_ZPSTY_ABSSTA_ABSSTX_ABSSTA_IND_YSTY_ZP_XSTA_ZP_XSTX_ZP_YSTA_ABS_YSTA_ABS_XLDY_IMMLDX_IMMLDY_ZPLDA_ZPLDX_ZPLDA_IMMLDY_ABSLDA_ABSLDX_ABSNOP"
+const _Instruction_name = "BRKCLCSECRTIJMP_ABSCLIADC_IND_XADC_ZPADC_IMMADC_ABSADC_IND_YADC_ZP_XSEIADC_ABS_YADC_ABS_XSTA_IND_XSTY_ZPSTA_ZPSTX_ZPSTY_ABSSTA_ABSSTX_ABSSTA_IND_YSTY_ZP_XSTA_ZP_XSTX_ZP_YSTA_ABS_YSTA_ABS_XLDY_IMMLDX_IMMLDY_ZPLDA_ZPLDX_ZPLDA_IMMLDY_ABSLDA_ABSLDX_ABSCLVCPY_IMMCMP_IND_XCPY_ZPCMP_ZPCMP_IMMCPY_ABSCMP_ABSCMP_IND_YCMP_ZP_XCLDCMP_ABS_YCMP_ABS_XCPX_IMMSBC_IND_XCPX_ZPSBC_ZPSBC_IMMNOPCPX_ABSSBC_ABSSBC_IND_YSBC_ZP_XSEDSBC_ABS_YSBC_ABS_X"
 
 var _Instruction_map = map[Instruction]string{
 	0:   _Instruction_name[0:3],
-	64:  _Instruction_name[3:6],
-	76:  _Instruction_name[6:13],
-	129: _Instruction_name[13:22],
-	132: _Instruction_name[22:28],
-	133: _Instruction_name[28:34],
-	134: _Instruction_name[34:40],
-	140: _Instruction_name[40:47],
-	141: _Instruction_name[47:54],
-	142: _Instruction_name[54:61],
-	145: _Instruction_name[61:70],
-	148: _Instruction_name[70:78],
-	149: _Instruction_name[78:86],
-	150: _Instruction_name[86:94],
-	153: _Instruction_name[94:103],
-	157: _Instruction_name[103:112],
-	160: _Instruction_name[112:119],
-	162: _Instruction_name[119:126],
-	164: _Instruction_name[126:132],
-	165: _Instruction_name[132:138],
-	166: _Instruction_name[138:144],
-	169: _Instruction_name[144:151],
-	172: _Instruction_name[151:158],
-	173: _Instruction_name[158:165],
-	174: _Instruction_name[165:172],
-	234: _Instruction_name[172:175],
+	24:  _Instruction_name[3:6],
+	56:  _Instruction_name[6:9],
+	64:  _Instruction_name[9:12],
+	76:  _Instruction_name[12:19],
+	88:  _Instruction_name[19:22],
+	97:  _Instruction_name[22:31],
+	101: _Instruction_name[31:37],
+	105: _Instruction_name[37:44],
+	109: _Instruction_name[44:51],
+	113: _Instruction_name[51:60],
+	117: _Instruction_name[60:68],
+	120: _Instruction_name[68:71],
+	121: _Instruction_name[71:80],
+	125: _Instruction_name[80:89],
+	129: _Instruction_name[89:98],
+	132: _Instruction_name[98:104],
+	133: _Instruction_name[104:110],
+	134: _Instruction_name[110:116],
+	140: _Instruction_name[116:123],
+	141: _Instruction_name[123:130],
+	142: _Instruction_name[130:137],
+	145: _Instruction_name[137:146],
+	148: _Instruction_name[146:154],
+	149: _Instruction_name[154:162],
+	150: _Instruction_name[162:170],
+	153: _Instruction_name[170:179],
+	157: _Instruction_name[179:188],
+	160: _Instruction_name[188:195],
+	162: _Instruction_name[195:202],
+	164: _Instruction_name[202:208],
+	165: _Instruction_name[208:214],
+	166: _Instruction_name[214:220],
+	169: _Instruction_name[220:227],
+	172: _Instruction_name[227:234],
+	173: _Instruction_name[234:241],
+	174: _Instruction_name[241:248],
+	184: _Instruction_name[248:251],
+	192: _Instruction_name[251:258],
+	193: _Instruction_name[258:267],
+	196: _Instruction_name[267:273],
+	197: _Instruction_name[273:279],
+	201: _Instruction_name[279:286],
+	204: _Instruction_name[286:293],
+	205: _Instruction_name[293:300],
+	209: _Instruction_name[300:309],
+	213: _Instruction_name[309:317],
+	216: _Instruction_name[317:320],
+	217: _Instruction_name[320:329],
+	221: _Instruction_name[329:338],
+	224: _Instruction_name[338:345],
+	225: _Instruction_name[345:354],
+	228: _Instruction_name[354:360],
+	229: _Instruction_name[360:366],
+	233: _Instruction_name[366:373],
+	234: _Instruction_name[373:376],
+	236: _Instruction_name[376:383],
+	237: _Instruction_name[383:390],
+	241: _Instruction_name[390:399],
+	245: _Instruction_name[399:407],
+	248: _Instruction_name[407:410],
+	249: _Instruction_name[410:419],
+	253: _Instruction_name[419:428],
 }
 
 func (i Instruction) String() string {

@@ -134,7 +134,8 @@ func (cpu *CPU) styZpx() int {
 }
 
 func (cpu *CPU) stAbs(r *register.Register) int {
-	lb, hb := cpu.abs()
+	lb := cpu.bus.Read(cpu.pc.Read())
+	hb := cpu.bus.Read(cpu.pc.Read())
 
 	r.Store([2]byte{lb, hb})
 

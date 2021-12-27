@@ -66,9 +66,7 @@ func (cpu *CPU) ldAbs(r *register.Register) int {
 	cpu.p.ResetNegative()
 	cpu.p.ResetZero()
 
-	lb, hb := cpu.abs()
-
-	data := cpu.bus.Read([2]byte{lb, hb})
+	data := cpu.abs()
 
 	r.Load(data)
 

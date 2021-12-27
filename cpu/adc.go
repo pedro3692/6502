@@ -1,20 +1,86 @@
 package cpu
 
-import "github.com/pedro3692/6502/internal/register"
-
 const (
-	adcImmCost = 2
-	adcZPCost  = 3
-	adcZPXCost = 4
-	adcAbs     = 4
-	adcAbsx    = 4
-	adcAbsy    = 4
-	adcIndx    = 6
-	adcIndy    = 5
+	adcImmCost  = 2
+	adcZPCost   = 3
+	adcZpxCost  = 4
+	adcAbsCost  = 4
+	adcAbsxCost = 4
+	adcAbsyCost = 4
+	adcIndxCost = 6
+	adcIndyCost = 5
 )
 
-func (cpu *CPU) adcImm(r *register.Register) int {
-	data := cpu.bus.Read(cpu.pc.Read())
+func (cpu *CPU) adcImm() int {
+	cpu.adc(cpu.imm())
+
+	return adcImmCost
+}
+
+func (cpu *CPU) adcAbs() int {
+	cpu.adc(cpu.abs())
+
+	return adcAbsCost
+}
+
+func (cpu *CPU) adcAbsx() int {
+	cost := adcAbsCost
+	data, pageCrossed := cpu.absx()
+
+	if pageCrossed {
+		cost++
+	}
+
+	cpu.adc(data)
+
+	return cost
+}
+
+func (cpu *CPU) adcAbsy() int {
+	cost := adcAbsCost
+	data, pageCrossed := cpu.absy()
+
+	if pageCrossed {
+		cost++
+	}
+
+	cpu.adc(data)
+
+	return cost
+}
+
+func (cpu *CPU) adcZp() int {
+	cpu.adc(cpu.zp())
+
+	return adcZPCost
+}
+
+func (cpu *CPU) adcZpx() int {
+	cpu.adc(cpu.zpx())
+
+	return adcZpxCost
+}
+
+func (cpu *CPU) adcIndx() int {
+	cpu.adc(cpu.indx())
+
+	return adcIndxCost
+}
+
+func (cpu *CPU) adcIndy() int {
+	cost := adcIndyCost
+	data, pageCrossed := cpu.indy()
+
+	if pageCrossed {
+		cost++
+	}
+
+	cpu.adc(data)
+
+	return cost
+}
+
+func (cpu *CPU) adc(data byte) {
 	a := cpu.a.Read()
 	carry := cpu.p.Carry()
 
@@ -31,6 +97,4 @@ func (cpu *CPU) adcImm(r *register.Register) int {
 	}
 
 	cpu.a.Load(byte(sum & 0xFF))
-
-	return adcImmCost
 }

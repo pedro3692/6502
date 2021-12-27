@@ -8,6 +8,8 @@ const (
 )
 
 func (cpu *CPU) brk() int {
+	cpu.p.SetBreak()
+
 	cpu.pc.Read()
 	pc := cpu.pc.Read() // PC + 2
 
@@ -18,7 +20,6 @@ func (cpu *CPU) brk() int {
 	cpu.bus.StackPush(cpu.sp.Read(), cpu.p.Read()) // push P
 	cpu.sp.Inc()
 
-	cpu.p.SetBreak()
 	cpu.p.ResetDecimalMode()
 	cpu.p.SetIRQBDisable()
 
@@ -39,6 +40,8 @@ func (cpu *CPU) rti() int {
 	pcl := cpu.bus.StackPull(cpu.sp.Read()) // pull PCL
 	cpu.sp.Dec()
 	pch := cpu.bus.StackPull(cpu.sp.Read()) // pull PCH
+
+	cpu.p.ResetBreak()
 
 	cpu.pc.Load([2]byte{pcl, pch})
 

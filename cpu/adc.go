@@ -81,6 +81,9 @@ func (cpu *CPU) adcIndy() int {
 }
 
 func (cpu *CPU) adc(data byte) {
+	cpu.p.ResetZero()
+	cpu.p.ResetNegative()
+
 	a := cpu.a.Read()
 	carry := cpu.p.Carry()
 
@@ -100,6 +103,10 @@ func (cpu *CPU) adc(data byte) {
 
 	if byteSum>>7 == 1 {
 		cpu.p.SetNegative()
+	}
+
+	if byteSum == 0x00 {
+		cpu.p.SetZero()
 	}
 
 	cpu.a.Load(byteSum)

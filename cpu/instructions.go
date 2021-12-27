@@ -37,7 +37,15 @@ const (
 	LDY_ABS   Instruction = 0xac
 	LDA_ABS   Instruction = 0xad
 	LDX_ABS   Instruction = 0xae
+	SBC_IND_X Instruction = 0xe1
+	SBC_ZP    Instruction = 0xe5
+	SBC_IMM   Instruction = 0xe9
 	NOP       Instruction = 0xea
+	SBC_ABS   Instruction = 0xed
+	SBC_IND_Y Instruction = 0xf1
+	SBC_ZP_X  Instruction = 0xf5
+	SBC_ABS_Y Instruction = 0xf9
+	SBC_ABS_X Instruction = 0xfd
 )
 
 func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
@@ -81,6 +89,16 @@ func (cpu *CPU) createInstuctionsTable() map[Instruction]instructionFunc {
 	instructionTable[LDY_ABS] = cpu.ldyAbs
 	instructionTable[LDA_ABS] = cpu.ldaAbs
 	instructionTable[LDX_ABS] = cpu.ldxAbs
+
+	instructionTable[SBC_IND_X] = cpu.sbcIndx
+	instructionTable[SBC_ZP] = cpu.sbcZp
+	instructionTable[SBC_IMM] = cpu.sbcImm
+	instructionTable[SBC_ABS] = cpu.sbcAbs
+	instructionTable[SBC_IND_Y] = cpu.sbcIndy
+	instructionTable[SBC_ZP_X] = cpu.sbcZpx
+	instructionTable[SBC_ABS_Y] = cpu.sbcAbsy
+	instructionTable[SBC_ABS_X] = cpu.sbcAbsx
+	instructionTable[SBC_ZP_X] = cpu.sbcZpx
 
 	instructionTable[NOP] = cpu.nop
 
